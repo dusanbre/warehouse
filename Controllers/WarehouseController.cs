@@ -25,12 +25,12 @@ public class WarehouseController: ControllerBase
             Address = "Test addr"
         };
 
-        _apiDbContext.Add(warehouse);
-
-        await _apiDbContext.SaveChangesAsync();
+        // _apiDbContext.Add(warehouse);
+        //
+        // await _apiDbContext.SaveChangesAsync();
 
         var response = await _apiDbContext.Warehouses.ToListAsync();
 
-        return Ok(response);
+        return Ok("Test");
     }
 }
