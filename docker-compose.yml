@@ -1,0 +1,41 @@
+version: '3.4'
+
+networks:
+  dev:
+    driver: bridge
+    
+services: 
+  api:
+    image: docker.io/library/warehouse
+    container_name: warehouse-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8001:80"
+    depends_on: 
+      - "pgsql"
+    environment:
+      - ConnectionStrings__DefaultConnection=User ID=postgres;Password=postgres;Server=pgsql;Port=5432;Database=Warehouse;IntegratedSecurity=true;Pooling=true;
+      - ASPNETCORE_URLS=http://+:80
+    networks: 
+      - dev 
+  
+  pgsql:
+    image: postgres:latest
+    container_name: warehouse-db
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=Warehouse
+    restart: always
+    volumes:
+      - app_data:/var/lib/postgresql/data
+    networks: 
+      - dev
+        
+volumes: 
+  app_data:
+    
